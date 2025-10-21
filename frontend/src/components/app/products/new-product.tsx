@@ -16,7 +16,7 @@ const formSchema = z.object({
     colour: z.string().min(2, {
         message: "El color debe contener al menos dos caracteres"
     }),
-    quantity: z.number().min(1)
+    quantity: z.string()
 })
 
 export const NewProductForm = () => {
@@ -26,7 +26,7 @@ export const NewProductForm = () => {
         defaultValues: {
             name: "",
             colour: "#FF0000",
-            quantity: 0
+            quantity: "0"
         },
     })
 
@@ -65,6 +65,23 @@ export const NewProductForm = () => {
                                     {...field}
                                     alpha={true}
                                     className="mt-0"
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+
+                <FormField
+                    control={form.control}
+                    name="quantity"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Cantidad</FormLabel>
+                            <FormControl>
+                                <Input
+                                    type="number"
+                                    {...field}
                                 />
                             </FormControl>
                             <FormMessage />
