@@ -1,5 +1,3 @@
-"use client"
-
 import { ShowProducts } from '@/components/app/products/show-products';
 
 export default function Page() {

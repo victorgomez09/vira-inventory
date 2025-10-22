@@ -1,10 +1,13 @@
-const BASE_URL = 'https://jubilant-yodel-g7j7q7j6qxfvjrp-8000.app.github.dev/api/v1'; 
-// const BASE_URL = 'http://localhost:8000/api/v1';
+import { Category } from "./category";
+
+// const BASE_URL = 'https://jubilant-yodel-g7j7q7j6qxfvjrp-8000.app.github.dev/api/v1'; 
+const BASE_URL = 'http://localhost:8000/api/v1';
 
 export type Product = {
-  id: string
+  id: number
   colour: string
   quantity: number
+  category: Category
 }
 
 export async function fetchProducts(): Promise<Product[]> {
@@ -17,7 +20,7 @@ export async function fetchProducts(): Promise<Product[]> {
   return await response.json() || [];
 }
 
-export async function fetchProduct(productId: string) {
+export async function fetchProduct(productId: number): Promise<{ product: Product }> {
   const response = await fetch(
     `${BASE_URL}/product/${productId}`
   );
@@ -28,7 +31,7 @@ export async function fetchProduct(productId: string) {
   };
 }
 
-export async function createProduct(product: Omit<Product, 'id'>) {
+export async function createProduct(product: Omit<Product, 'id' | 'category'> & { category_id: number }) {
   const response = await fetch(`${BASE_URL}/product`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

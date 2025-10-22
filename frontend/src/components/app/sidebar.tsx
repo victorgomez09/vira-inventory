@@ -1,57 +1,71 @@
 "use client"
 
-import { Plus, Search, Settings, Volleyball } from "lucide-react"
+import { Layers, Plus, Search, Settings, Volleyball } from "lucide-react"
 
 import {
-    Sidebar,
-    SidebarContent,
-    SidebarGroup,
-    SidebarGroupContent,
-    SidebarGroupLabel,
-    SidebarMenu,
-    SidebarMenuButton,
-    SidebarMenuItem,
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
 
 // Menu items.
 const items = [
   {
     title: "Lanas",
-    url: "products",
+    url: "/lanas",
     icon: Volleyball,
   },
+  // {
+  //   title: "Buscar",
+  //   url: "search",
+  //   icon: Search,
+  // },
   {
-    title: "Buscar",
-    url: "search",
-    icon: Search,
-  },
-    {
-    title: "Nuevo",
-    url: "products/new",
+    title: "Nueva lanita",
+    url: "/lanas/nueva",
     icon: Plus,
   },
   {
-    title: "Settings",
-    url: "#",
-    icon: Settings,
+    title: "Categorías",
+    url: "/categorias",
+    icon: Layers,
   },
+  {
+    title: "Nueva categoría",
+    url: "/categorias/nueva",
+    icon: Plus,
+  },
+  // {
+  //   title: "Settings",
+  //   url: "#",
+  //   icon: Settings,
+  // },
 ]
 
 export const AppSidebar = () => {
+  const pathname = usePathname();
+
   return (
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
+          <SidebarGroupLabel>Lanitas Vira</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
+                <SidebarMenuItem key={item.title} className={`${pathname === item.url ? 'bg-primary/10 rounded-md' : ''}`}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url}>
+                    <Link href={item.url} className={`${pathname === item.url ? 'text-primary font-semibold' : ''}`}>
                       <item.icon />
                       <span>{item.title}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}

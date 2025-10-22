@@ -316,7 +316,7 @@ export default function InputColor({
         <Popover onOpenChange={handlePopoverChange}>
           <PopoverTrigger asChild>
             <Button
-              className="border-border h-12 w-12 border shadow-none relative overflow-hidden"
+              className="border-border border shadow-none relative overflow-hidden"
               size={"icon"}
               style={{ backgroundColor: hexInputValue }}
             >
@@ -523,7 +523,7 @@ export default function InputColor({
             value={getCurrentHexValue()}
             onChange={(e) => handleHexChange(e.target.value)}
             onBlur={onBlur}
-            className={`h-12 uppercase ${error ? "border-destructive" : ""}`}
+            className={`uppercase ${error ? "border-destructive" : ""}`}
           />
           {isLoading && (
             <span className="absolute inset-y-0 right-0 flex items-center pr-4">

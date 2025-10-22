@@ -6,18 +6,27 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input"
 import { createProduct } from "@/lib/api/product"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { useForm } from "react-hook-form"
 import z from "zod"
+import { toast } from "sonner"
+import { fetchCategories } from "@/lib/api/category"
+import { Spinner } from "@/components/ui/spinner"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 const formSchema = z.object({
     colour: z.string().min(2, {
         message: "El color debe contener al menos dos caracteres"
     }),
-    quantity: z.string()
+    quantity: z.string(),
+    category: z.string()
 })
 
 export const NewProductForm = () => {
+    const { data, isLoading, isError } = useQuery({
+        queryKey: ['categories'],
+        queryFn: () => fetchCategories()
+    });
     const queryClient = useQueryClient();
 
     const mutation = useMutation({
@@ -35,7 +44,8 @@ export const NewProductForm = () => {
         resolver: zodResolver(formSchema),
         defaultValues: {
             colour: "#FF0000",
-            quantity: "0"
+            quantity: "1",
+            category: data ? String(data[0].id) || "1" : "1"
         },
     })
 
@@ -43,8 +53,27 @@ export const NewProductForm = () => {
         console.log(values)
         mutation.mutateAsync({
             colour: values.colour,
-            quantity: Number(values.quantity)
+            quantity: Number(values.quantity),
+            category_id: Number(values.category)
         })
+
+        toast.info("Lana creada!")
+    }
+
+    if (isLoading) {
+        return (
+            <div className="flex items-center justify-center w-full h-full">
+                <Spinner />
+            </div>
+        )
+    }
+
+    if (isError) {
+        return (
+            <div className="flex items-center justify-center w-full h-full">
+                {toast.error('Error al cargar las lanitas')}
+            </div>
+        )
     }
 
     return (
@@ -70,6 +99,32 @@ export const NewProductForm = () => {
 
                 <FormField
                     control={form.control}
+                    name="category"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Categoría</FormLabel>
+                            <FormControl>
+                                <Select {...field} onValueChange={field.onChange} value={field.value}>
+                                    <SelectTrigger className="w-full">
+                                        <SelectValue placeholder="Theme" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {data?.map((category) => (
+                                            <SelectItem key={category.id} value={category.id.toString()}>
+                                                {category.name}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+
+                {/* <FormField
+                    control={form.control}
                     name="quantity"
                     render={({ field }) => (
                         <FormItem>
@@ -83,7 +138,7 @@ export const NewProductForm = () => {
                             <FormMessage />
                         </FormItem>
                     )}
-                />
+                /> */}
                 <Button type="submit" className="w-full">Guardar</Button>
             </form>
         </Form>
