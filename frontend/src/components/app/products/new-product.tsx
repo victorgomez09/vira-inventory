@@ -4,15 +4,13 @@ import { Button } from "@/components/ui/button"
 import InputColor from "@/components/ui/color-picker"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { createProduct } from "@/lib/api/product"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useState } from "react"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useForm } from "react-hook-form"
 import z from "zod"
 
 const formSchema = z.object({
-    name: z.string().min(2, {
-        message: "El nombre debe contener al menos dos caracteres.",
-    }),
     colour: z.string().min(2, {
         message: "El color debe contener al menos dos caracteres"
     }),
@@ -20,40 +18,38 @@ const formSchema = z.object({
 })
 
 export const NewProductForm = () => {
-    // 1. Define your form.
+    const queryClient = useQueryClient();
+
+    const mutation = useMutation({
+        mutationFn: createProduct,
+        onSuccess: () => {
+            // Invalidate and refetch products list
+            queryClient.invalidateQueries({ queryKey: ['products'] });
+        },
+        onError: (error) => {
+            console.error('Failed to create product:', error);
+        }
+    });
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            name: "",
             colour: "#FF0000",
             quantity: "0"
         },
     })
 
-    // 2. Define a submit handler.
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        // Do something with the form values.
-        // ✅ This will be type-safe and validated.
+    const onSubmit = (values: z.infer<typeof formSchema>) => {
         console.log(values)
+        mutation.mutateAsync({
+            colour: values.colour,
+            quantity: Number(values.quantity)
+        })
     }
 
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full h-full">
-                <FormField
-                    control={form.control}
-                    name="name"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Nombre</FormLabel>
-                            <FormControl>
-                                <Input placeholder="Lanita 1" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-
                 <FormField
                     control={form.control}
                     name="colour"
@@ -88,7 +84,7 @@ export const NewProductForm = () => {
                         </FormItem>
                     )}
                 />
-                <Button type="submit">Guardar</Button>
+                <Button type="submit" className="w-full">Guardar</Button>
             </form>
         </Form>
     )

@@ -11,7 +11,7 @@ class ProductView(views.APIView):
 
         return Response(serializer.data)
     
-    def product(self, request, format=None):
+    def post(self, request, format=None):
         serializer = ProductSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
