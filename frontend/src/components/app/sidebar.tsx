@@ -19,7 +19,7 @@ import { usePathname } from "next/navigation"
 const items = [
   {
     title: "Lanas",
-    url: "/lanas",
+    url: "/gestion/lanas",
     icon: Volleyball,
   },
   // {
@@ -29,17 +29,17 @@ const items = [
   // },
   {
     title: "Nueva lanita",
-    url: "/lanas/nueva",
+    url: "/gestion/lanas/nueva",
     icon: Plus,
   },
   {
     title: "Categorías",
-    url: "/categorias",
+    url: "/gestion/categorias",
     icon: Layers,
   },
   {
     title: "Nueva categoría",
-    url: "/categorias/nueva",
+    url: "/gestion/categorias/nueva",
     icon: Plus,
   },
   // {
