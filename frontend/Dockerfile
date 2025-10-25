@@ -10,19 +10,24 @@ RUN corepack enable && corepack prepare pnpm@latest --activate
 # Copy package files
 COPY package.json pnpm-lock.yaml ./
 
-# Install dependencies
-RUN pnpm install
+# Install dependencies with production flags
+RUN pnpm install --frozen-lockfile
 
 # Copy project files
 COPY . .
 
+# Set production environment
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+
 # Build the Next.js application
-RUN pnpm build
+RUN NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL:-http://localhost:8000} pnpm build
+
+# Remove development dependencies
+RUN pnpm prune --prod
 
 # Expose port
 EXPOSE 3000
 
 # Start the application
-ENV NODE_ENV=production
-ENV NEXT_TELEMETRY_DISABLED=1
-CMD ["sh", "-c", "NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL:-http://localhost:8000} pnpm start"]
+CMD ["pnpm", "start"]
