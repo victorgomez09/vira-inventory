@@ -75,6 +75,7 @@ export const ShowProducts = () => {
             </div>
 
             <div className="grid grid-col gap-2 lg:gap-4 auto-cols-max grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 p-4 w-full">
+                {data && data.length === 0 && <div>No hay lanitas disponibles</div>}
                 {data && data.filter(product => categoriesSelected.length === 0 || categoriesSelected.includes(product.category.name)).map((product, index) => {
                     return (
                         <Card key={index} className="py-0">

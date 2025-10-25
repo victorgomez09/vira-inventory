@@ -30,6 +30,7 @@ export const ShowCategories = () => {
 
     return (
         <div className="grid grid-col gap-2 lg:gap-4 auto-cols-max grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 p-4 w-full">
+            {data && data.length === 0 && <div>No hay categorías disponibles</div>}
             {data?.map((category, index) => {
                 return (
                     <Card key={index} className="py-0">

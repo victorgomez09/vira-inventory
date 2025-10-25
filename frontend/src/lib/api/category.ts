@@ -1,5 +1,4 @@
-// const BASE_URL = 'https://jubilant-yodel-g7j7q7j6qxfvjrp-8000.app.github.dev/api/v1'; 
-const BASE_URL = 'http://localhost:8000/api/v1';
+import { API_URL } from './config';
 
 export type Category = {
   id: number
@@ -10,8 +9,7 @@ export type Category = {
 
 export async function fetchCategories(): Promise<Category[]> {
   const response = await fetch(
-    // `${BASE_URL}/product?_page=${page}&_limit=${limit}`
-    `${BASE_URL}/category`
+    `${API_URL}/category`
   );
   if (!response.ok) throw new Error('Failed to fetch categories');
 
@@ -20,7 +18,7 @@ export async function fetchCategories(): Promise<Category[]> {
 
 export async function fetchCategory(categoryId: number): Promise<{ product: Category }> {
   const response = await fetch(
-    `${BASE_URL}/category/${categoryId}`
+    `${API_URL}/category/${categoryId}`
   );
   if (!response.ok) throw new Error('Failed to fetch category');
 
@@ -30,7 +28,7 @@ export async function fetchCategory(categoryId: number): Promise<{ product: Cate
 }
 
 export async function createCategory(category: Omit<Category, 'id' | 'createdAt'>) {
-  const response = await fetch(`${BASE_URL}/category`, {
+  const response = await fetch(`${API_URL}/category`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(category),
@@ -41,7 +39,7 @@ export async function createCategory(category: Omit<Category, 'id' | 'createdAt'
 }
 
 export async function updateCategory(id: string, category: Omit<Category, 'id'>): Promise<Category> {
-  const response = await fetch(`${BASE_URL}/category/${id}`, {
+  const response = await fetch(`${API_URL}/category/${id}`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(category),

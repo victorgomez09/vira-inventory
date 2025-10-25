@@ -14,9 +14,4 @@ class Migration(migrations.Migration):
             model_name='product',
             name='image',
         ),
-        migrations.AlterField(
-            model_name='product',
-            name='id',
-            field=models.AutoField(editable=False, primary_key=True, serialize=False),
-        ),
     ]

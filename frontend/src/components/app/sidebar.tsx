@@ -1,6 +1,6 @@
 "use client"
 
-import { Layers, Plus, Search, Settings, Volleyball } from "lucide-react"
+import { Layers, Plus, Volleyball } from "lucide-react"
 
 import {
   Sidebar,

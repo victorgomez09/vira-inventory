@@ -1,12 +1,13 @@
 "use client"
 
+import { Suspense } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Spinner } from "@/components/ui/spinner";
 import { fetchProducts } from "@/lib/api/product";
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
 
-export default function PublicPage() {
+function ProductList() {
     const searchParams = useSearchParams();
     const categoriesParam = searchParams.get("categories");
     const selectedCategories = categoriesParam ? categoriesParam.split(",") : [];
@@ -52,5 +53,17 @@ export default function PublicPage() {
                 ))}
             </div>
         </div>
+    );
+}
+
+export default function PublicPage() {
+    return (
+        <Suspense fallback={
+            <div className="flex items-center justify-center w-full h-full">
+                <Spinner />
+            </div>
+        }>
+            <ProductList />
+        </Suspense>
     );
 }

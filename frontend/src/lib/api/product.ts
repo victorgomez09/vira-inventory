@@ -1,7 +1,5 @@
 import { Category } from "./category";
-
-// const BASE_URL = 'https://jubilant-yodel-g7j7q7j6qxfvjrp-8000.app.github.dev/api/v1'; 
-const BASE_URL = 'http://localhost:8000/api/v1';
+import { API_URL } from './config';
 
 export type Product = {
   id: number
@@ -12,8 +10,7 @@ export type Product = {
 
 export async function fetchProducts(): Promise<Product[]> {
   const response = await fetch(
-    // `${BASE_URL}/product?_page=${page}&_limit=${limit}`
-    `${BASE_URL}/product`
+    `${API_URL}/product`
   );
   if (!response.ok) throw new Error('Failed to fetch products');
 
@@ -22,7 +19,7 @@ export async function fetchProducts(): Promise<Product[]> {
 
 export async function fetchProduct(productId: number): Promise<{ product: Product }> {
   const response = await fetch(
-    `${BASE_URL}/product/${productId}`
+    `${API_URL}/product/${productId}`
   );
   if (!response.ok) throw new Error('Failed to fetch product');
 
@@ -32,7 +29,7 @@ export async function fetchProduct(productId: number): Promise<{ product: Produc
 }
 
 export async function createProduct(product: Omit<Product, 'id' | 'category'> & { category_id: number }) {
-  const response = await fetch(`${BASE_URL}/product`, {
+  const response = await fetch(`${API_URL}/product`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(product),
@@ -43,7 +40,7 @@ export async function createProduct(product: Omit<Product, 'id' | 'category'> & 
 }
 
 export async function updateProduct(id: string, product: Omit<Product, 'id'>): Promise<Product> {
-  const response = await fetch(`${BASE_URL}/products/${id}`, {
+  const response = await fetch(`${API_URL}/product/${id}`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(product),

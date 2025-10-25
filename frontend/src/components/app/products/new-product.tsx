@@ -3,16 +3,15 @@
 import { Button } from "@/components/ui/button"
 import InputColor from "@/components/ui/color-picker"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Spinner } from "@/components/ui/spinner"
+import { fetchCategories } from "@/lib/api/category"
 import { createProduct } from "@/lib/api/product"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { useForm } from "react-hook-form"
-import z from "zod"
 import { toast } from "sonner"
-import { fetchCategories } from "@/lib/api/category"
-import { Spinner } from "@/components/ui/spinner"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import z from "zod"
 
 const formSchema = z.object({
     colour: z.string().min(2, {
@@ -45,12 +44,11 @@ export const NewProductForm = () => {
         defaultValues: {
             colour: "#FF0000",
             quantity: "1",
-            category: data ? String(data[0].id) || "1" : "1"
+            category: data ? String(data[0]?.id) || "1" : "1"
         },
     })
 
     const onSubmit = (values: z.infer<typeof formSchema>) => {
-        console.log(values)
         mutation.mutateAsync({
             colour: values.colour,
             quantity: Number(values.quantity),
