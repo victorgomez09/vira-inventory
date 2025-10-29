@@ -58,7 +58,14 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "inventory.urls"
 
-CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', 'http://localhost:3000').split(',')
+# Read allowed CORS origins from environment or use safe defaults. Strip whitespace.
+env_origins = os.environ.get(
+    'CORS_ALLOWED_ORIGINS',
+    'http://localhost:3000,http://localhost:1209,https://lanitas.esmosolutions.es'
+)
+CORS_ALLOWED_ORIGINS = [o.strip() for o in env_origins.split(',') if o.strip()]
+# Prefer explicit allowed origins in production
+CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOW_CREDENTIALS = True
 
 TEMPLATES = [
