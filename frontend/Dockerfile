@@ -24,7 +24,7 @@ ENV NEXT_TELEMETRY_DISABLED=1
 RUN NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL:-http://localhost:8000} pnpm build
 
 # Remove development dependencies
-RUN pnpm prune --prod
+# RUN pnpm prune --prod
 
 # Expose port
 EXPOSE 3000

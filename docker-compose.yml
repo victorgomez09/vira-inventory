@@ -34,13 +34,13 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
       args:
-        - NEXT_PUBLIC_API_URL=http://localhost:8000
+        - NEXT_PUBLIC_API_URL=http://backend:8000
     # frontend will run the Next.js node server internally on 3000;
     # we expose it only to the internal Docker network and let nginx proxy requests to it.
     restart: always
     environment:
       - NODE_ENV=production
-      - NEXT_PUBLIC_API_URL=http://localhost:8000
+      - NEXT_PUBLIC_API_URL=http://backend:8000
     # For production, we don't need source code volume mounted
     # volumes:
     #   - ./frontend:/app
@@ -54,7 +54,7 @@ services:
     image: nginx:stable-alpine
     restart: always
     ports:
-      - "3000:80" # expose nginx on host:3000
+      - "1209:80" # expose nginx on host:3000
     volumes:
       - ./frontend/nginx.conf:/etc/nginx/conf.d/default.conf:ro
     depends_on:
