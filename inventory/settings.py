@@ -59,7 +59,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = "inventory.urls"
 
 # CORS_ALLOW_ALL_ORIGINS = [o.strip() for o in os.environ.get('CORS_ALLOWED_ORIGINS', 'http://localhost:3000').split(',') if o.strip()]
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = [o.strip() for o in os.environ.get('CORS_ALLOWED_ORIGINS', 'http://localhost:3000').split(',') if o.strip()]
 CORS_ALLOW_CREDENTIALS = True
 
 TEMPLATES = [
