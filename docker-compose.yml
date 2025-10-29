@@ -38,8 +38,6 @@ services:
     # frontend will run the Next.js node server internally on 3000;
     # we expose it only to the internal Docker network and let nginx proxy requests to it.
     restart: always
-    ports:
-      - "3000:3000"
     environment:
       - NODE_ENV=production
       - NEXT_PUBLIC_API_URL=http://backend:8000
@@ -48,6 +46,19 @@ services:
     #   - ./frontend:/app
     #   - /app/node_modules
     depends_on:
+      - backend
+    networks:
+      - app-network
+
+  proxy:
+    image: nginx:stable-alpine
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ./frontend/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - frontend
       - backend
     networks:
       - app-network
