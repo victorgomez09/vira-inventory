@@ -21,7 +21,7 @@ ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 
 # Build the Next.js application
-RUN NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL:-http://localhost:8000} pnpm build
+RUN pnpm build
 
 # Remove development dependencies
 # RUN pnpm prune --prod
